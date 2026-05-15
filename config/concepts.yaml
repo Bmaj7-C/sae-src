@@ -1,0 +1,220 @@
+# concepts.yaml
+# definitions for SAE urban concept audit
+# experiment and src read from this file
+
+model: gemma-2-9b-it
+sae_id: gemmascope-res-131k
+layer: 9
+
+# --- PRIMITIVES ---
+# target token + multiple prompt frames
+primitives:
+
+  # land use
+  residential:
+    target_token: residential
+    prompts:
+      - "The residential area is located near the park."
+      - "This is a residential neighborhood with single-family homes."
+      - "Residential development has increased in recent years."
+      - "The city designated this zone as residential."
+      - "Most residential properties here were built in the 1960s."
+
+  commercial:
+    target_token: commercial
+    prompts:
+      - "The commercial district attracts many shoppers."
+      - "Commercial activity has declined in the downtown core."
+      - "This area is zoned for commercial use."
+      - "New commercial developments are planned for next year."
+      - "The commercial sector employs most residents."
+
+  # Mobility
+  transit:
+    target_token: transit
+    prompts:
+      - "Public transit serves the entire metropolitan area."
+      - "The transit system includes buses and light rail."
+      - "Transit ridership has grown steadily since 2015."
+      - "Improving transit access is a city priority."
+      - "The neighborhood has excellent transit connections."
+
+  pedestrian:
+    target_token: pedestrian
+    prompts:
+      - "Pedestrian infrastructure includes wide sidewalks."
+      - "The pedestrian environment is safe and well-lit."
+      - "Pedestrian traffic increases during lunch hours."
+      - "New pedestrian crossings were installed last year."
+      - "The city prioritizes pedestrian safety."
+
+  walkable:
+    target_token: walk  # 'walkable' tokenizes; probe 'walk' from 'walkable'
+    prompts:
+      - "The neighborhood is highly walkable."
+      - "Walkable communities tend to have higher property values."
+      - "Making the city more walkable is a key goal."
+      - "This area scores well on walkability indices."
+      - "A walkable urban environment benefits public health."
+
+  # spatial structure
+  density:
+    target_token: density
+    prompts:
+      - "Population density in this district exceeds 10,000 per square mile."
+      - "High density development supports local businesses."
+      - "Density is a key factor in transit viability."
+      - "The city encourages higher density near stations."
+      - "Residential density varies across the metropolitan area."
+
+  proximity:
+    target_token: proximity
+    prompts:
+      - "Proximity to amenities is a key quality of life factor."
+      - "The proximity of schools and parks matters to families."
+      - "Residents value proximity to daily services."
+      - "Proximity to transit stations increases property values."
+      - "The concept emphasizes proximity over mobility."
+
+  diversity:
+    target_token: diversity
+    prompts:
+      - "Land use diversity characterizes mixed-use neighborhoods."
+      - "Functional diversity supports vibrant street life."
+      - "The diversity of local businesses attracts visitors."
+      - "Urban diversity includes social and economic dimensions."
+      - "Greater diversity of amenities improves neighborhood resilience."
+
+  # 15-min city specific
+  digitalization:
+    target_token: digitalization
+    prompts:
+      - "Digitalization enables new forms of urban service delivery."
+      - "The role of digitalization in city planning is growing."
+      - "Digitalization supports remote work and reduces commuting."
+      - "Smart city strategies rely on digitalization."
+      - "Digitalization can enhance proximity through virtual access."
+
+  connectivity:
+    target_token: connectivity
+    prompts:
+      - "Street connectivity affects walkability and travel patterns."
+      - "Network connectivity is essential for transit efficiency."
+      - "The neighborhood has good connectivity to surrounding areas."
+      - "Improving connectivity between districts is a planning goal."
+      - "Connectivity includes both physical and digital infrastructure."
+
+# --- SYNONYMY PAIRS ---
+synonymy:
+  downtown_citycenter:
+    pair: [downtown, center]
+    prompts_a:
+      - "The downtown area has many restaurants and shops."
+      - "She works in downtown and commutes by train."
+      - "Downtown revitalization efforts began in 2010."
+    prompts_b:
+      - "The city center has many restaurants and shops."
+      - "She works in the city center and commutes by train."
+      - "City center revitalization efforts began in 2010."
+
+  suburbs_outskirts:
+    pair: [suburbs, outskirts]
+    prompts_a:
+      - "The suburbs have grown rapidly in recent decades."
+      - "Many families moved to the suburbs for larger homes."
+      - "The suburbs lack adequate public transportation."
+    prompts_b:
+      - "The outskirts have grown rapidly in recent decades."
+      - "Many families moved to the outskirts for larger homes."
+      - "The outskirts lack adequate public transportation."
+
+# --- OPPOSITION PAIRS ---
+opposition:
+  compact_sprawl:
+    pair: [compact, sprawl]
+    prompts_a:
+      - "Compact urban development reduces car dependency."
+      - "The city promotes compact growth near transit."
+      - "Compact neighborhoods have shorter trip distances."
+    prompts_b:
+      - "Urban sprawl increases car dependency."
+      - "Sprawl development consumes agricultural land."
+      - "Sprawl neighborhoods have longer commute times."
+
+  transit_car:
+    pair: [transit-rich, car-dependent]
+    prompts_a:
+      - "Transit-rich neighborhoods have higher walking rates."
+      - "Living in a transit-rich area reduces household costs."
+      - "Transit-rich communities attract diverse residents."
+    prompts_b:
+      - "Car-dependent neighborhoods have lower walking rates."
+      - "Living in a car-dependent area increases household costs."
+      - "Car-dependent communities have wider roads."
+
+# --- COMPOSITE CONCEPTS ---
+composites:
+  tod:
+    label: "Transit-Oriented Development"
+    expected_primitives: [transit, density, pedestrian, walkable, residential, commercial]
+    prompts:
+      - "Transit-oriented development is a planning approach used in many cities."
+      - "Transit-oriented development combines housing and transit access."
+      - "The neighborhood was designed as a transit-oriented development."
+      - "Transit-oriented development encourages walking and cycling."
+      - "Cities invest in transit-oriented development to reduce sprawl."
+      - "Transit-oriented development typically features mixed-use buildings near stations."
+      - "The principles of transit-oriented development include density and connectivity."
+      - "Transit-oriented development has become popular in North American cities."
+      - "Residents of transit-oriented developments drive less than average."
+      - "A successful transit-oriented development integrates multiple transport modes."
+
+  mixed_use:
+    label: "Mixed-Use Zoning"
+    expected_primitives: [residential, commercial, diversity]
+    prompts:
+      - "Mixed-use zoning allows both residential and commercial buildings."
+      - "The city adopted mixed-use zoning to revitalize downtown."
+      - "Mixed-use zoning creates vibrant neighborhoods."
+      - "Under mixed-use zoning, ground floors are retail and upper floors are apartments."
+      - "Mixed-use zoning reduces the need for long commutes."
+
+  fifteen_min_city:
+    label: "15-Minute City"
+    expected_primitives: [proximity, density, diversity, digitalization, connectivity, walkable, pedestrian]
+    prompts:
+      - "The 15-minute city is an urban planning concept gaining traction worldwide."
+      - "In a 15-minute city, residents access daily needs within a short walk."
+      - "The 15-minute city concept was proposed by Carlos Moreno."
+      - "Paris has adopted the 15-minute city as a planning framework."
+      - "The 15-minute city emphasizes proximity and local living."
+      - "Critics argue the 15-minute city limits freedom of movement."
+      - "A 15-minute city requires density, diversity, and proximity."
+      - "The 15-minute city promotes walkable neighborhoods with mixed land use."
+      - "Implementing a 15-minute city involves redesigning urban infrastructure."
+      - "The 15-minute city concept gained attention during the COVID-19 pandemic."
+
+# --- STEERING ---
+steering:
+  prompt: "Generate a synthetic travel diary for a resident of a transit-oriented development neighborhood. Include their typical weekday trips, modes of transport, and destinations."
+  conditions:
+    baseline:
+      features: []
+      strength: 0
+    density:
+      features: [59287]  # high density (rank-1, 5/5 prompts)
+      strength: 20
+    walkability:
+      features: [84571]  # terms related to walk (rank-1, 5/5 prompts)
+      strength: 20
+    proximity:
+      features: [33342]  # proximity (rank-1, 5/5 prompts)
+      strength: 20
+    diversity:
+      features: [122133]  # diversity in and of (rank-1, 5/5 prompts)
+      strength: 20
+    combined:
+      features: [59287, 84571, 33342, 122133]  # all four missing TOD components
+      strength: 2
+  n_generations: 50
+  temperature: 0.5

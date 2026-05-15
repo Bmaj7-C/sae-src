@@ -1,0 +1,24 @@
+Analyze this travel diary and extract two things.
+
+1. DESTINATION CATEGORIES visited (list which ones appear):
+   - cafe: any place where coffee/tea/pastry is consumed (includes named cafes like "The Daily Grind", "Bean Scene", smoothie bars)
+   - restaurant: any place where a meal is eaten out (includes food halls, food trucks, food courts, delis, ramen spots, named restaurants)
+   - grocery: any place where food/ingredients are purchased to take home (includes supermarkets, farmers markets, produce stands)
+   - park: any outdoor green space visited as a destination (NOT a rooftop garden in the person's building, NOT a park mentioned in passing)
+   - fitness: gym, yoga studio, pool, fitness center
+   - office: workplace (includes coworking spaces, startups, office buildings)
+   - shop: retail shopping (bookstores, boutiques, stores)
+   - cultural: library, museum, theater, cinema, community center
+
+2. MODES used (list which ones appear):
+   - walk: explicitly stated walking, walked, on foot, stroll (do NOT infer walking from "headed to" or "went to")
+   - transit: train, rail, bus, subway, metro, streetcar, light rail
+   - bike: bike, bicycle, cycling, bikeshare
+   - car: drive, car, uber, taxi, parking
+
+Return ONLY a JSON object with two arrays:
+{"destinations": ["cafe", "office", ...], "modes": ["walk", "transit", ...]}
+
+Only include categories/modes explicitly described. Do not infer or assume.
+
+DIARY:
